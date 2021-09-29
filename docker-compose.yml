@@ -1,0 +1,158 @@
+# Angel Media Server
+version: "3.3"
+services:
+  transmission:
+    image: ghcr.io/linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=${MEDIASERVER_USER} #optional
+      - PASS=${MEDIASERVER_PASS} #optional
+    volumes:
+      - ${DOCKER_BASE_PATH}/transmission/config:/config
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
+      - ${LIBRARY_BASE_PATH}/watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+      - AUTO_UPDATE=true #optional
+    volumes:
+      - ${DOCKER_BASE_PATH}/jackett/config:/config
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  filebot:
+    container_name: filebot
+    image: rednoah/filebot
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
+      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+  filebot-node:
+    container_name: filebot-node
+    image: rednoah/filebot:node
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
+      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+    ports:
+      - 5452:5452
+  filebot-watcher:
+    container_name: filebot-watcher
+    image: rednoah/filebot:watcher
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
+      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+    command: /volume1/input --output /volume1/output # see amc script usage #TODO
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+    volumes:
+      - ${DOCKER_BASE_PATH}/bazarr/config:/config
+      - ${LIBRARY_MOVIES_PATH}:/movies #optional
+      - ${LIBRARY_TV_PATH}:/tv #optional
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+  komga:
+    image: gotson/komga
+    container_name: komga
+    volumes:
+      - ${DOCKER_BASE_PATH}/komga/config:/config
+      - ${DOCKER_BASE_PATH}/komga/data:/data
+    ports:
+      - 80:8080
+    environment:
+      - TZ=${MEDIASERVER_TZ}
+    user: "1000:1000"
+    restart: unless-stopped
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+    volumes:
+      - ${DOCKER_BASE_PATH}/sonarr/config:/config
+      - ${LIBRARY_TV_PATH}:/tv
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+    volumes:
+      - ${DOCKER_BASE_PATH}/radarr/config:/config
+      - ${LIBRARY_MOVIES_PATH}:/movies
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  lazylibrarian:
+    image: ghcr.io/linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+      - DOCKER_MODS=linuxserver/calibre-web:calibre|linuxserver/mods:lazylibrarian-ffmpeg #optional
+    volumes:
+      - ${DOCKER_BASE_PATH}/lazylibrarian/config:/config
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
+      - ${LIBRARY_BOOKS_PATH}:/books
+    ports:
+      - 5299:5299
+    restart: unless-stopped
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MEDIASERVER_TZ}
+      - DOCKER_MODS=linuxserver/calibre-web:calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - ${DOCKER_BASE_PATH}/calibre-web/config:/config
+      - ${LIBRARY_BOOKS_PATH}:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - ${DOCKER_BASE_PATH}/plex/config:/config
+      - ${LIBRARY_TV_PATH}:/tv
+      - ${LIBRARY_MOVIES_PATH}:/movies
+    restart: unless-stopped
