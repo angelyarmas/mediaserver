@@ -38,25 +38,40 @@ services:
     container_name: filebot
     image: rednoah/filebot
     restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${MEDIASERVER_TZ}
     volumes:
-      - ${DOCKER_BASE_PATH}/filebot/data:/data
-      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/input
+      - ${LIBRARY_TV_PATH}:/tv
+      - ${LIBRARY_MOVIES_PATH}:/movies
   filebot-node:
     container_name: filebot-node
     image: rednoah/filebot:node
     restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${MEDIASERVER_TZ}
     volumes:
-      - ${DOCKER_BASE_PATH}/filebot/data:/data
-      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/input
+      - ${LIBRARY_TV_PATH}:/tv
+      - ${LIBRARY_MOVIES_PATH}:/movies
     ports:
       - 5452:5452
   filebot-watcher:
     container_name: filebot-watcher
     image: rednoah/filebot:watcher
     restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${MEDIASERVER_TZ}
     volumes:
-      - ${DOCKER_BASE_PATH}/filebot/data:/data
-      - ${MEDIASERVER_DOWNLOADS_PATH}/filebot:/volume1 #TODO - CHECK IF NECESSARY
+      - ${MEDIASERVER_DOWNLOADS_PATH}:/input
+      - ${LIBRARY_TV_PATH}:/tv
+      - ${LIBRARY_MOVIES_PATH}:/movies
     command: /volume1/input --output /volume1/output # see amc script usage #TODO
   bazarr:
     image: ghcr.io/linuxserver/bazarr
