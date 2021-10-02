@@ -5,8 +5,8 @@ services:
     image: ghcr.io/linuxserver/transmission
     container_name: transmission
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
       - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
       - USER=${MEDIASERVER_USER} #optional
@@ -24,8 +24,8 @@ services:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
       - AUTO_UPDATE=true #optional
     volumes:
@@ -62,8 +62,8 @@ services:
     image: ghcr.io/linuxserver/bazarr
     container_name: bazarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
       - ${DOCKER_BASE_PATH}/bazarr/config:/config
@@ -75,21 +75,22 @@ services:
   komga:
     image: gotson/komga
     container_name: komga
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${MEDIASERVER_TZ}
     volumes:
       - ${DOCKER_BASE_PATH}/komga/config:/config
-      - ${DOCKER_BASE_PATH}/komga/data:/data
+      - ${LIBRARY_COMICS_PATH}:/data
     ports:
-      - 88:8080
-    environment:
-      - TZ=${MEDIASERVER_TZ}
-    user: "1000:1000"
+      - 49171:8080
     restart: unless-stopped
   sonarr:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
       - ${DOCKER_BASE_PATH}/sonarr/config:/config
@@ -102,8 +103,8 @@ services:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
       - ${DOCKER_BASE_PATH}/radarr/config:/config
@@ -116,8 +117,8 @@ services:
     image: ghcr.io/linuxserver/lazylibrarian
     container_name: lazylibrarian
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
       - DOCKER_MODS=linuxserver/calibre-web:calibre|linuxserver/mods:lazylibrarian-ffmpeg #optional
     volumes:
@@ -131,8 +132,8 @@ services:
     image: ghcr.io/linuxserver/calibre-web
     container_name: calibre-web
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
       - DOCKER_MODS=linuxserver/calibre-web:calibre #optional
       - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
@@ -147,8 +148,8 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - VERSION=docker
       - PLEX_CLAIM= #optional
     volumes:
