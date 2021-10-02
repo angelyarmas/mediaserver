@@ -3,7 +3,6 @@ version: "3.3"
 services:
   transmission:
     image: ghcr.io/linuxserver/transmission
-    container_name: transmission
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -22,7 +21,6 @@ services:
     restart: unless-stopped
   jackett:
     image: ghcr.io/linuxserver/jackett
-    container_name: jackett
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -54,7 +52,6 @@ services:
       - AMC_ANIME_FORMAT=anime/{n} ({y})/season {s00}/{n} - {s00e00} - {t}
   bazarr:
     image: ghcr.io/linuxserver/bazarr
-    container_name: bazarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -68,7 +65,6 @@ services:
     restart: unless-stopped
   komga:
     image: gotson/komga
-    container_name: komga
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -81,7 +77,6 @@ services:
     restart: unless-stopped
   sonarr:
     image: ghcr.io/linuxserver/sonarr
-    container_name: sonarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -95,7 +90,6 @@ services:
     restart: unless-stopped
   radarr:
     image: ghcr.io/linuxserver/radarr
-    container_name: radarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -109,7 +103,6 @@ services:
     restart: unless-stopped
   lazylibrarian:
     image: ghcr.io/linuxserver/lazylibrarian
-    container_name: lazylibrarian
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -124,7 +117,6 @@ services:
     restart: unless-stopped
   calibre-web:
     image: ghcr.io/linuxserver/calibre-web
-    container_name: calibre-web
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -139,7 +131,6 @@ services:
     restart: unless-stopped
   plex:
     image: ghcr.io/linuxserver/plex
-    container_name: plex
     network_mode: host
     environment:
       - PUID=${PUID}
