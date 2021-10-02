@@ -43,6 +43,7 @@ services:
       - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
       - ${MEDIASERVER_DOWNLOADS_PATH}:/input
       - ${LIBRARY_TV_PATH}:/tv
       - ${LIBRARY_MOVIES_PATH}:/movies
@@ -55,6 +56,7 @@ services:
       - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
       - ${MEDIASERVER_DOWNLOADS_PATH}:/input
       - ${LIBRARY_TV_PATH}:/tv
       - ${LIBRARY_MOVIES_PATH}:/movies
@@ -69,6 +71,7 @@ services:
       - PGID=${PGID}
       - TZ=${MEDIASERVER_TZ}
     volumes:
+      - ${DOCKER_BASE_PATH}/filebot/data:/data
       - ${MEDIASERVER_DOWNLOADS_PATH}:/input
       - ${LIBRARY_TV_PATH}:/tv
       - ${LIBRARY_MOVIES_PATH}:/movies
