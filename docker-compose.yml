@@ -72,7 +72,8 @@ services:
       - TZ=${MEDIASERVER_TZ}
     volumes:
       - ${DOCKER_BASE_PATH}/komga/config:/config
-      - ${LIBRARY_COMICS_PATH}:/data
+      - ${LIBRARY_COMICS_PATH}:/data/comics
+      - ${LIBRARY_MANGA_PATH}:/data/manga
     ports:
       - 49171:8080
     restart: unless-stopped
