@@ -50,6 +50,7 @@ services:
       - AMC_MOVIE_FORMAT=/output/movies/{n} ({y})/{n} ({y})
       - AMC_SERIES_FORMAT=/output/tv/{n} ({y})/season {s00}/{n} - {s00e00} - {t}
       - AMC_ANIME_FORMAT=/output/tv/{n} ({y})/season {s00}/{n} - {s00e00} - {t}
+    restart: unless-stopped
   bazarr:
     image: ghcr.io/linuxserver/bazarr
     environment:
