@@ -61,6 +61,8 @@ services:
       - ${DOCKER_BASE_PATH}/bazarr/config:/config
       - ${LIBRARY_MOVIES_PATH}:/movies #optional
       - ${LIBRARY_TV_PATH}:/tv #optional
+      - ${LIBRARY_ANIME_PATH}:/anime
+      - ${LIBRARY_CARTOON_PATH}:/cartoon
     ports:
       - 6767:6767
     restart: unless-stopped
