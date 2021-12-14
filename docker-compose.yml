@@ -61,8 +61,8 @@ services:
       - ${DOCKER_BASE_PATH}/bazarr/config:/config
       - ${LIBRARY_MOVIES_PATH}:/movies #optional
       - ${LIBRARY_TV_PATH}:/tv #optional
-      - ${LIBRARY_ANIME_PATH}:/anime
-      - ${LIBRARY_CARTOON_PATH}:/cartoon
+      - ${LIBRARY_ANIME_PATH}:/anime:rw
+      - ${LIBRARY_CARTOON_PATH}:/cartoon:rw
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -88,8 +88,8 @@ services:
     volumes:
       - ${DOCKER_BASE_PATH}/sonarr/config:/config
       - ${LIBRARY_TV_PATH}:/tv
-      - ${LIBRARY_ANIME_PATH}:/anime
-      - ${LIBRARY_CARTOON_PATH}:/cartoon
+      - ${LIBRARY_ANIME_PATH}:/anime:rw
+      - ${LIBRARY_CARTOON_PATH}:/cartoon:rw
       - ${MEDIASERVER_DOWNLOADS_PATH}:/downloads
     ports:
       - 8989:8989
@@ -146,7 +146,7 @@ services:
     volumes:
       - ${DOCKER_BASE_PATH}/plex/config:/config
       - ${LIBRARY_TV_PATH}:/tv
-      - ${LIBRARY_ANIME_PATH}:/anime
-      - ${LIBRARY_CARTOON_PATH}:/cartoon
+      - ${LIBRARY_ANIME_PATH}:/anime:rw
+      - ${LIBRARY_CARTOON_PATH}:/cartoon:rw
       - ${LIBRARY_MOVIES_PATH}:/movies
     restart: unless-stopped
